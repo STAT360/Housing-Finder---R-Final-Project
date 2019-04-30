@@ -1,0 +1,14 @@
+CRIME
+Crimes - 2001 to present ||| https://catalog.data.gov/dataset/crimes-2001-to-present-398a4
+
+CLIMATE
+U.S. Hourly Precipitation Data ||| https://catalog.data.gov/dataset/u-s-hourly-precipitation-data
+U.S. Monthly Climate Normals ||| https://catalog.data.gov/dataset/u-s-monthly-climate-normals-1981-2010
+U.S. Annual/Seasonal Climate Normals ||| https://catalog.data.gov/dataset/u-s-annual-seasonal-climate-normals-1981-2010
+
+HOUSING PRICES AND SALES
+U.S. International Trade in Goods and Services (Housing Prices) ||| https://catalog.data.gov/dataset/us-international-trade-in-goods-and-services
+
+POPULATION
+County-level Data Sets ||| https://catalog.data.gov/dataset/county-level-data-sets
+
