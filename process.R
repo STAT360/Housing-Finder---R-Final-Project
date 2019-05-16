@@ -5,6 +5,108 @@ library(readxl)
 library(xlsx)
 library(datapasta)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 files <- list.files()
 tbl <- sapply(files, read_excel, simplify = FALSE) %>%
   bind_rows(.id = 'state')
@@ -42,6 +144,16 @@ Crime <- StateAbb %>%
   select(-c('State', 'Rape2'))
 
 colnames(Crime) <- c('State', 'City', 'Population', 'Violent', 'Murder', 'Rape', 'Robbery', 'Aggravated Assault', 'Property', 'Burglary', 'Larceny', 'Motor Vehicle')
+
+####
+
+Precip <- read_excel("~/Final/data/PrecipitationData.xlsx", 
+                     col_names = c('State', 'City', 'AnnualPrecip'),
+                     col_types = c("text", "text", "numeric"), skip = 1)
+  
+CrimeAndPrecip <- Crime %>%
+  mutate(City = toupper(City)) %>%
+  merge.data.frame(Precip, by = c('City', 'State'))
 
 
 
