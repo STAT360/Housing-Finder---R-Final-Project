@@ -53,3 +53,13 @@ CrimeAndPrecip <- Crime %>%
   mutate(City = toupper(City)) %>%
   merge.data.frame(Precip, by = c('City', 'State'))
 
+####
+
+CityCoordinates <- read_csv("~/Final/data/CityCoordinates.csv", col_names = c('City', 'State', 'LAT', 'LNG'),   skip = 1)
+
+AllData <- CityCoordinates %>%
+  mutate(City = toupper(City)) %>%
+  merge.data.frame(CrimeAndPrecip, by = c('City', 'State'))
+
+
+
