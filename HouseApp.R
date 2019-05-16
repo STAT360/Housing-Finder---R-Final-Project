@@ -1,4 +1,5 @@
 library(shiny)
+library(leaflet)
 
 ui <- fluidPage(
   titlePanel("House Finder"),
