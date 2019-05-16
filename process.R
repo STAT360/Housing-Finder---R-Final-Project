@@ -61,5 +61,8 @@ AllData <- CityCoordinates %>%
   mutate(City = toupper(City)) %>%
   merge.data.frame(CrimeAndPrecip, by = c('City', 'State'))
 
+### Prep data for mapping
 
+AllData$LAT <- as.numeric(AllData$LAT)
+AllData$LNG <- as.numeric(AllData$LNG)
 
