@@ -55,11 +55,23 @@ CrimeAndPrecip <- Crime %>%
 
 ####
 
-CityCoordinates <- read_csv("~/Final/data/CityCoordinates.csv", col_names = c('City', 'State', 'LAT', 'LNG'),   skip = 1)
+CityCoordinates <- read_csv("/data/CityCoordinates.csv", col_names = c('City', 'State', 'LAT', 'LNG'),   skip = 1)
+
+HPI_master2 <- HPI_master %>%
+  mutate(State = substr(State, 2, nchar(State))) %>%
+  select(c('City', 'State', 'index_nsa')) %>%
+  mutate(City = gsub("-.*","",City)) 
+
+HPI_master2$State <- HPI_master$State
+HPI_master <- HPI_master2 %>% 
+  mutate(State = substr(State, 1,2))
 
 AllData <- CityCoordinates %>%
   mutate(City = toupper(City)) %>%
   merge.data.frame(CrimeAndPrecip, by = c('City', 'State'))
+
+AllData2 <- AllData %>% 
+  merge.data.frame(HPI_master2, by = c('City', 'State'))
 
 ### Prep data for mapping
 
