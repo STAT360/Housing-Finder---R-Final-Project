@@ -45,7 +45,7 @@ colnames(Crime) <- c('State', 'City', 'Population', 'Violent', 'Murder', 'Rape',
 
 ####
 
-Precip <- read_excel("~/Final/data/PrecipitationData.xlsx", 
+Precip <- read_excel("data/PrecipitationData.xlsx", 
                      col_names = c('State', 'City', 'AnnualPrecip'),
                      col_types = c("text", "text", "numeric"), skip = 1)
   
@@ -72,6 +72,13 @@ AllData <- CityCoordinates %>%
 
 AllData2 <- AllData %>% 
   merge.data.frame(HPI_master2, by = c('City', 'State'))
+
+#### Add House Price
+
+HousePrice <- read_csv("data/HousePrice.csv")
+
+AllData3 <-HousePrice%>%
+  merge.data.frame(AllData, by = c('City', 'State'))
 
 ### Prep data for mapping
 
