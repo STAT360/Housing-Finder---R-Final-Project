@@ -6,9 +6,11 @@ ui <- fluidPage(
   # TEXT
   titlePanel(h1("House Finder")),
   p("Welcome to the House Finder Shiny App, where you can find
-              the ideal place for you to live!", style = "font-size: 16px"),
+              your ideal place to live!", style = "font-size: 18px"),
   p("Currently, you can look at factors such as Crime Rate, Housing Price Index, Precipitation, and Location.
-    With the help of our interactive map, you can explore places in the United States to find your new home.", style = "font-size: 16px"),
+    With the help of our interactive map, you can explore places in the United States to find your new home.", style = "font-size: 18px"),
+  br(),
+  p("Adjust the sliders below to filter your choices", style = "font-size: 16px"),
   hr(),
   
   # INTERACTIVE INPUTS
