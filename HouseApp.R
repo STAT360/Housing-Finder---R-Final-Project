@@ -2,29 +2,34 @@ library(shiny)
 library(leaflet)
 
 ui <- fluidPage(
+  theme = shinytheme('darkly'),
   # TEXT
-  titlePanel("House Finder"),
+  titlePanel(h1("House Finder")),
   p("Welcome to the House Finder Shiny App, where you can find
-              the ideal place for you to live!", style = "font-size: 20px"),
-  br(),
+              the ideal place for you to live!", style = "font-size: 16px"),
   p("Currently, you can look at factors such as Crime Rate, Housing Price Index, Precipitation, and Location.
-    With the help of our interactive map, you can explore places in the United States to find your new home.", style = "font-size: 20px"),
+    With the help of our interactive map, you can explore places in the United States to find your new home.", style = "font-size: 16px"),
+  hr(),
   
   # INTERACTIVE INPUTS
-  checkboxGroupInput("choices", label = h3("Factors"), 
-                     choices = list("HPI" = 1, "Weather" = 2, "Crime" = 3),
-  ),
-  hr(),
-  fluidRow(column(3, verbatimTextOutput("value"))),
-  
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("range1", h4("Median Home Price ($)"), 0, max(AllData3$HomeSalesPrice),
+                  value = range(AllData3$HomeSalesPrice), step = 100000),
+      sliderInput("range", h4("Annual Precipitation (inches)"), 0, max(AllData3$AnnualPrecip),
+                value = range(AllData3$AnnualPrecip), step = 500),
+      sliderInput("range2", h4("Property Crime Rate (per 1000 residents)"), 0, max(AllData3$PropCrimeRatePer1000),
+                  value = range(AllData3$PropCrimeRatePer1000), step = 10),
+      checkboxGroupInput("choices", label = h4("Factors"), 
+                         choices = list("HPI" = 1, "Weather" = 2, "Crime" = 3)),
+      fluidRow(column(3, verbatimTextOutput("value")))
+    ),
+    
   # MAP
-  leafletOutput('mymap', height = 1000),
-  absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-                width = 330, height = "auto",
-                
-                sliderInput("range", "Annual Precipitation", min(AllData$AnnualPrecip), max(AllData$AnnualPrecip),
-                            value = range(AllData$AnnualPrecip), step = 100))
+    mainPanel(
+      leafletOutput('mymap', height = 600)
+    )
+  )
 )
 
 server <- function(input, output, session) {
@@ -33,19 +38,20 @@ server <- function(input, output, session) {
   
   # MAP
   data <- reactive({
-      AllData[AllData$AnnualPrecip >= input$range[1] & AllData$AnnualPrecip <= input$range[2],]
+      AllData3[AllData3$AnnualPrecip >= input$range[1] & AllData3$AnnualPrecip <= input$range[2],]
     })
   
   output$mymap <- renderLeaflet({
-    AllData <- data()
+    AllData3 <- data()
     
-    m <- leaflet(data = AllData) %>%
+    m <- leaflet(data = AllData3) %>%
       addTiles() %>%
+      setView(-95, 41, zoom = 4.4) %>%
       addMarkers(lng = ~LNG,
                  lat = ~LAT,
-                 popup = paste('Population:', AllData$Population, "<br>",
-                               'Annual Precipitation:', AllData$AnnualPrecip, "<br>",
-                               'Property Crime:', AllData$Property))
+                 popup = paste('Population:', AllData3$Population, "<br>",
+                               'Annual Precipitation:', AllData3$AnnualPrecip, "<br>",
+                               'Property Crime:', AllData3$Property))
     m
   })
 }
