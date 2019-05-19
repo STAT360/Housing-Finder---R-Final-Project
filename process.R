@@ -77,8 +77,15 @@ AllData2 <- AllData %>%
 
 HousePrice <- read_csv("data/HousePrice.csv")
 
-AllData3 <-HousePrice%>%
+HousePrice <- HousePrice %>%
+  mutate(HomeSalesPrice = parse_number(HousePrice$`Median Sale Price`)) %>%
+  select(c('City', 'State', 'HomeSalesPrice'))
+
+AllData3 <-HousePrice %>%
   merge.data.frame(AllData, by = c('City', 'State'))
+
+AllData3 <- AllData3 %>%
+  mutate(PropCrimeRatePer1000 = (parse_number(AllData3$Property)/parse_number(AllData3$Population)*1000))
 
 ### Prep data for mapping
 
