@@ -4,18 +4,17 @@ library(leaflet)
 ui <- fluidPage(
   theme = shinytheme('darkly'),
   # TEXT
-  titlePanel(h1("House Finder")),
+  titlePanel(h1("House Finder!")),
   p("Welcome to the House Finder Shiny App, where you can find
               your ideal place to live!", style = "font-size: 18px"),
   p("Currently, you can look at factors such as Crime Rate, Housing Price Index, Precipitation, and Location.
     With the help of our interactive map, you can explore places in the United States to find your new home.", style = "font-size: 18px"),
-  br(),
-  p("Adjust the sliders below to filter your choices", style = "font-size: 16px"),
   hr(),
   
   # INTERACTIVE INPUTS
   sidebarLayout(
     sidebarPanel(
+      h5('Adjust sliders to narrow your options.'),
       sliderInput("range1", h4("Median Home Price ($)"), 0, max(AllData3$HomeSalesPrice),
                   value = range(AllData3$HomeSalesPrice), step = 100000),
       sliderInput("range", h4("Annual Precipitation (inches)"), 0, max(AllData3$AnnualPrecip),
@@ -40,7 +39,9 @@ server <- function(input, output, session) {
   
   # MAP
   data <- reactive({
-      AllData3[AllData3$AnnualPrecip >= input$range[1] & AllData3$AnnualPrecip <= input$range[2],]
+      AllData3[AllData3$AnnualPrecip >= input$range[1] & AllData3$AnnualPrecip <= input$range[2] &
+                 AllData3$HomeSalesPrice >= input$range1[1] & AllData3$HomeSalesPrice <= input$range1[2] &
+                 AllData3$PropCrimeRatePer1000 >= input$range2[1] & AllData3$PropCrimeRatePer1000 <= input$range2[2],]
     })
   
   output$mymap <- renderLeaflet({
@@ -52,8 +53,10 @@ server <- function(input, output, session) {
       addMarkers(lng = ~LNG,
                  lat = ~LAT,
                  popup = paste('Population:', AllData3$Population, "<br>",
+                               'Median Home Price:', AllData3$HomeSalesPrice, '<br>',
                                'Annual Precipitation:', AllData3$AnnualPrecip, "<br>",
-                               'Property Crime:', AllData3$Property))
+                               'Property Crime Rate:', AllData3$PropCrimeRatePer1000, "<br>")
+                 )
     m
   })
 }
