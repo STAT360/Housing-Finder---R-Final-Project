@@ -3,7 +3,9 @@ library(leaflet)
 
 ui <- fluidPage(
   theme = shinytheme('darkly'),
-  # TEXT
+  
+  # Title Text
+  
   titlePanel(h1("House Finder!")),
   p("Welcome to the House Finder Shiny App, where you can find
               your ideal place to live!", style = "font-size: 18px"),
@@ -11,7 +13,8 @@ ui <- fluidPage(
     With the help of our interactive map, you can explore places in the United States to find your new home.", style = "font-size: 18px"),
   hr(),
   
-  # INTERACTIVE INPUTS
+  # Interactive Inputs
+  
   sidebarLayout(
     sidebarPanel(
       h5('Adjust sliders to narrow your options.'),
@@ -23,7 +26,8 @@ ui <- fluidPage(
                   value = range(AllData3$PropCrimeRatePer1000), step = 5)
     ),
     
-  # MAP
+  # Panels with map and table output
+  
     mainPanel(
       tabsetPanel(type = 'tabs',
                   tabPanel('Map View', leafletOutput('mymap', height = 600)),
@@ -34,17 +38,21 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  # MAP
+  # Reactive Data
   
   data <- reactive({
       AllData3[AllData3$AnnualPrecip >= input$range[1] & AllData3$AnnualPrecip <= input$range[2] &
                  AllData3$HomeSalesPrice >= input$range1[1] & AllData3$HomeSalesPrice <= input$range1[2] &
-                 AllData3$PropCrimeRatePer1000 >= input$range2[1] & AllData3$PropCrimeRatePer1000 <= input$range2[2],]
+                 AllData3$PropCrimeRatePer1000 >= input$range2[1] & AllData3$PropCrimeRatePer1000 <= input$range2[2], ]
     })
+  
+  #Reactive Table
   
   output$table <- renderDataTable({
     data()
   })
+  
+  #Reactive Map
   
   output$mymap <- renderLeaflet({
     AllData3 <- data()
