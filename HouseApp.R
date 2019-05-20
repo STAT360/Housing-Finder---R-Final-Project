@@ -25,7 +25,9 @@ ui <- fluidPage(
     
   # MAP
     mainPanel(
-      leafletOutput('mymap', height = 600)
+      tabsetPanel(type = 'tabs',
+                  tabPanel('Map View', leafletOutput('mymap', height = 600)),
+                  tabPanel('Table View', dataTableOutput('table')))
     )
   )
 )
@@ -33,11 +35,16 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   # MAP
+  
   data <- reactive({
       AllData3[AllData3$AnnualPrecip >= input$range[1] & AllData3$AnnualPrecip <= input$range[2] &
                  AllData3$HomeSalesPrice >= input$range1[1] & AllData3$HomeSalesPrice <= input$range1[2] &
                  AllData3$PropCrimeRatePer1000 >= input$range2[1] & AllData3$PropCrimeRatePer1000 <= input$range2[2],]
     })
+  
+  output$table <- renderDataTable({
+    data()
+  })
   
   output$mymap <- renderLeaflet({
     AllData3 <- data()
