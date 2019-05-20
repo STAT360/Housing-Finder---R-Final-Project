@@ -30,8 +30,15 @@ ui <- fluidPage(
   
     mainPanel(
       tabsetPanel(type = 'tabs',
-                  tabPanel('Map View', leafletOutput('mymap', height = 600)),
-                  tabPanel('Table View', dataTableOutput('table')))
+                  tabPanel('Map View',
+                           h4('Click on a city marker to learn more!'),
+                           leafletOutput('mymap', height = 600)),
+                  tabPanel('Table View',
+                           h4('Click on a column name to sort your results!'),
+                           h5('Example: Click "HomeSalePrice" to order by smallest to largest, then click it again to order by largest to smallest'),
+                           br(),
+                           dataTableOutput('table'))
+      )
     )
   )
 )
@@ -46,20 +53,20 @@ server <- function(input, output, session) {
                  AllData3$PropCrimeRatePer1000 >= input$range2[1] & AllData3$PropCrimeRatePer1000 <= input$range2[2], ]
     })
   
-  #Reactive Table
+  # Reactive Table
   
   output$table <- renderDataTable({
     data()
   })
   
-  #Reactive Map
+  # Reactive Map
   
   output$mymap <- renderLeaflet({
     AllData3 <- data()
     
     m <- leaflet(data = AllData3) %>%
       addTiles() %>%
-      setView(-95, 39, zoom = 4.4) %>%
+      setView(-95, 38, zoom = 4.4) %>%
       addMarkers(lng = ~LNG,
                  lat = ~LAT,
                  popup = paste(AllData3$City, ', ', AllData3$State, "<br>",
