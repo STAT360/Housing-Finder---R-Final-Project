@@ -86,4 +86,3 @@ AllData3[, c(3:17)] <- sapply(AllData3[, c(3:17)], as.numeric)
 AllData3 <- AllData3 %>%
   mutate(PropCrimeRatePer1000 = round(PropCrimeRatePer1000, 2)) %>%
   mutate(AnnualPrecip = AnnualPrecip/100)
-
