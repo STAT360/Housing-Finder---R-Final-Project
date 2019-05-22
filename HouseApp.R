@@ -19,11 +19,11 @@ ui <- fluidPage(
     sidebarPanel(
       h5('Adjust sliders to narrow your options.'),
       sliderInput("range1", h4("Median Home Price ($)"), 0, max(AllData3$HomeSalesPrice),
-                  value = range(AllData3$HomeSalesPrice), step = 50000),
-      sliderInput("range", h4("Year to Date Precipitation (inches)"), 0, max(AllData3$YTDprecip),
-                value = range(AllData3$YTDprecip), step = 5),
-      sliderInput("range2", h4("Property Crime Rate (per 1000 residents)"), 0, 81,
-                  value = range(AllData3$PropCrimeRatePer1000), step = 5)
+                  value = range(AllData3$HomeSalesPrice), step = 10000),
+      sliderInput("range", h4("Year to Date Precipitation (inches)"), 0, max(AllData3$AnnualPrecip),
+                value = range(AllData3$AnnualPrecip), step = 1),
+      sliderInput("range2", h4("Property Crime Rate (per 1000 residents)"), 0, max(AllData3$PropCrimeRatePer1000),
+                  value = range(AllData3$PropCrimeRatePer1000), step = 1)
     ),
     
   # Panels with map and table output
@@ -48,7 +48,7 @@ server <- function(input, output, session) {
   # Reactive Data
   
   data <- reactive({
-      AllData3[AllData3$YTDprecip >= input$range[1] & AllData3$YTDprecip <= input$range[2] &
+      AllData3[AllData3$AnnualPrecip >= input$range[1] & AllData3$AnnualPrecip <= input$range[2] &
                  AllData3$HomeSalesPrice >= input$range1[1] & AllData3$HomeSalesPrice <= input$range1[2] &
                  AllData3$PropCrimeRatePer1000 >= input$range2[1] & AllData3$PropCrimeRatePer1000 <= input$range2[2], ]
     })
@@ -72,7 +72,7 @@ server <- function(input, output, session) {
                  popup = paste(AllData3$City, ', ', AllData3$State, "<br>",
                                'Population:', AllData3$Population, "<br>",
                                'Median Home Price: $', AllData3$HomeSalesPrice, '<br>',
-                               'YTD Precipitation:', AllData3$YTDprecip, 'inches',"<br>",
+                               'YTD Precipitation:', AllData3$AnnualPrecip, 'inches',"<br>",
                                'Property Crime Rate:', AllData3$PropCrimeRatePer1000, "<br>")
                  )
     m
