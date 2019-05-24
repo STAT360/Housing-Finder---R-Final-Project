@@ -17,4 +17,4 @@ We're going to create an intuitive research tool for people looking to relocate 
 Most (if not all) of our data can be found from data.gov.
 
 
-READ Intall.md to see how to use House Finder.
+READ Install.md to see how to use House Finder.
